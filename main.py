@@ -8,3 +8,4 @@ if __name__ == "__main__":
     app: pygame_1.App = pygame_1.App()
     app.execute()
         
+
