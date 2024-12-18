@@ -137,16 +137,18 @@ class ActorSpriteDrivenBySpeed(ActorSprite):
 class Renard(ActorSpriteDrivenBySpeed):
     _energie : int
 
-    def __init__(self, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color = "red") -> None:
+    def __init__(self, energie: int, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color = "red") -> None:
         super().__init__(surface, position, speed, color)
+        self._energie = energie
 
 
 
 class Lapin(ActorSpriteDrivenBySpeed):
     _energie : int
 
-    def __init__(self, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="white", energie: int) -> None:
+    def __init__(self, energie: int, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="white") -> None:
         super().__init__(surface, position, speed, color)
+        self._energie = energie
 
 
 
@@ -155,7 +157,6 @@ class Plante(ActorSpriteDrivenBySpeed):
 
     def __init__(self, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="green" ) -> None:
         super().__init__(surface,position, speed, color)
-        self._energie = energie
 
 
 
@@ -187,6 +188,7 @@ class App:
 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
+        
 
     def __draw_screen(self) -> None:
         self.__screen.fill(pygame.color.THECOLORS["black"])
@@ -206,31 +208,42 @@ class App:
 
     def __init_actors(self) -> None:
         self.__actors_sprites = pygame.sprite.Group()
+        self.__renards_sprites = pygame.sprite.Group()
+        self.__lapins_sprites = pygame.sprite.Group()
+        self.__plantes_sprites = pygame.sprite.Group()
+
+
         
         for _ in range(22) :
             actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
             actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            renard = Renard(self.__screen, actor_position, actor_speed)
+            renard = Renard(self.__screen, 25, actor_position, actor_speed)
             self.__actors_sprites.add(renard)
+            self.__renards_sprites.add(renard)
+
             
 
         for _ in range(520) :
             actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
             actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            lapin = Lapin(self.__screen, actor_position, actor_speed)
+            lapin = Lapin(self.__screen, 10, actor_position, actor_speed)
             self.__actors_sprites.add(lapin)
+            self.__lapins_sprites.add(lapin)
  
 
         list_position_plante = []
-        for _ in range(720) :
+        for _ in range(700) :
             actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
             actor_speed = (0,0)
-            actor_energie = 
             plante = Plante(self.__screen, actor_position, actor_speed)            
             while actor_position in list_position_plante :    # vérifier que les plantes ne spown pas les unes sur les autres
                     actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
             list_position_plante.append(actor_position)
             self.__actors_sprites.add(plante)
+            self.__plantes_sprites.add(plante)
+
+
+
 
 
         
