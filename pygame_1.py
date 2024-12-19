@@ -135,7 +135,7 @@ class ActorSpriteDrivenBySpeed(ActorSprite):
 
 
 class Renard(ActorSpriteDrivenBySpeed):
-    _energie : int
+    energie : int
 
     def __init__(self, energie: int, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color = "red") -> None:
         super().__init__(surface, position, speed, color)
@@ -144,7 +144,7 @@ class Renard(ActorSpriteDrivenBySpeed):
 
 
 class Lapin(ActorSpriteDrivenBySpeed):
-    _energie : int
+    energie : int
 
     def __init__(self, energie: int, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="white") -> None:
         super().__init__(surface, position, speed, color)
@@ -188,6 +188,15 @@ class App:
 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
+
+        collisions = pygame.sprite.groupcollide(self.__lapins_sprites, self.__plantes_sprites, False, False) 
+        if collisions :
+            for lapin, plante in collisions.items() :
+                if lapin._energie < 20 :
+                    lapin._energie = lapin.energie + 3
+                    self.__plantes_sprites.remove(plante)
+    
+            
         
 
     def __draw_screen(self) -> None:
