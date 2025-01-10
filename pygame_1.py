@@ -2,13 +2,52 @@ import pygame
 from sys import exit
 from random import randint
 from typing import Tuple, Dict
+from math import sqrt
 
 
-hauteur = 400
-largeur = 400
+# Variables à définir :
+print("")
+print("Bienvenu dans ma simulation de Prédateurs et Proies")
+
+borne_min_ecran = 300
+borne_max_ecran = 700
+
+hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
+while hauteur < borne_min_ecran or hauteur > borne_max_ecran:
+    print("La hauteur n'est pas dans l'intervalle")
+    hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))
+
+largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
+while largeur < borne_min_ecran or largeur > borne_max_ecran:
+    print("La largeur n'est pas dans l'intervalle")
+    largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))
+
 WINDOW_SIZE: Tuple[int, int] = (largeur, hauteur)
-WINDOW_TITLE: str = "pygame window"
+WINDOW_TITLE: str = "Predateurs et Proies"
 FPS = 12
+
+
+
+max_renards = int(0.055 * sqrt(hauteur*largeur) * 2) 
+nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : ") or 22)
+while nbre_initial_renards < 0 or nbre_initial_renards > max_renards:
+    print("Le nombre n'est pas dans l'intervalle")
+    nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : "))
+
+max_lapins = int(1.3 * sqrt(hauteur*largeur) * 2)
+nbre_initial_lapins = int(input(f" - Entrez un nombre initial de lapins (inférieur à {max_lapins}) : ") or 520)
+while nbre_initial_lapins < 0 or nbre_initial_lapins > max_lapins:
+    print("Le nombre n'est pas dans l'intervalle")
+    nbre_initial_lapins = int(input(f" - Entrez un nombre initial de lapins (inférieur à {max_lapins}) : "))
+
+max_plantes = int(1.75 * sqrt(hauteur*largeur) * 2)
+nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : ") or 700)
+while nbre_initial_plantes < 0 or nbre_initial_plantes > max_plantes:
+    print("Le nombre n'est pas dans l'intervalle")
+    nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : "))
+
+
+
 
 
 
@@ -134,122 +173,9 @@ class ActorSpriteDrivenBySpeed(ActorSprite):
 
 
 
-class Renard(ActorSpriteDrivenBySpeed):
-    energie : int
-
-    def __init__(self, energie: int, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color = "red") -> None:
-        super().__init__(surface, position, speed, color)
-        self._energie = energie
 
 
 
-class Lapin(ActorSpriteDrivenBySpeed):
-    energie : int
-
-    def __init__(self, energie: int, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="white") -> None:
-        super().__init__(surface, position, speed, color)
-        self._energie = energie
-
-
-
-class Plante(ActorSpriteDrivenBySpeed):
-    energie : int
-
-    def __init__(self, surface: pygame.Surface,position: pygame.Vector2, speed: pygame.Vector2, color="green" ) -> None:
-        super().__init__(surface,position, speed, color)
-
-
-
-class App:
-    __window_size: Tuple[int, int] = WINDOW_SIZE
-    __window_title: str = WINDOW_TITLE
-    __screen: pygame.Surface = None
-    __running: bool = False
-    __clock: pygame.time.Clock = pygame.time.Clock()
-    __FPS: int = FPS
-
-    __actors_sprites: pygame.sprite.Group
-
-    def __init__(self) -> None:
-        pygame.init()
-        self.__init_screen()
-        self.__init_actors()
-        self.__running = True
-
-    def __init_screen(self) -> None:
-        self.__screen = pygame.display.set_mode(self.__window_size)
-        pygame.display.set_caption(self.__window_title)
-
-    def __handle_events(self, event) -> None:
-        if event.type == pygame.QUIT:
-            self.__running = False
-            pygame.quit()
-            exit()
-
-    def __update_actors(self) -> None:
-        self.__actors_sprites.update()
-
-        collisions = pygame.sprite.groupcollide(self.__lapins_sprites, self.__plantes_sprites, False, False) 
-        if collisions :
-            for lapin, plante in collisions.items() :
-                if lapin._energie < 20 :
-                    lapin._energie = lapin.energie + 3
-                    self.__plantes_sprites.remove(plante)
-    
-            
-        
-
-    def __draw_screen(self) -> None:
-        self.__screen.fill(pygame.color.THECOLORS["black"])
-
-    def __draw_actors(self) -> None:
-        self.__actors_sprites.draw(self.__screen)
-
-    def execute(self) -> None:
-        while self.__running:
-            self.__clock.tick(self.__FPS)
-            for event in pygame.event.get():
-                self.__handle_events(event)
-            self.__update_actors()
-            self.__draw_screen()
-            self.__draw_actors()
-            pygame.display.flip()
-
-    def __init_actors(self) -> None:
-        self.__actors_sprites = pygame.sprite.Group()
-        self.__renards_sprites = pygame.sprite.Group()
-        self.__lapins_sprites = pygame.sprite.Group()
-        self.__plantes_sprites = pygame.sprite.Group()
-
-
-        
-        for _ in range(22) :
-            actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
-            actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            renard = Renard(self.__screen, 25, actor_position, actor_speed)
-            self.__actors_sprites.add(renard)
-            self.__renards_sprites.add(renard)
-
-            
-
-        for _ in range(520) :
-            actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
-            actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            lapin = Lapin(self.__screen, 10, actor_position, actor_speed)
-            self.__actors_sprites.add(lapin)
-            self.__lapins_sprites.add(lapin)
- 
-
-        list_position_plante = []
-        for _ in range(700) :
-            actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
-            actor_speed = (0,0)
-            plante = Plante(self.__screen, actor_position, actor_speed)            
-            while actor_position in list_position_plante :    # vérifier que les plantes ne spown pas les unes sur les autres
-                    actor_position = pygame.Vector2(randint(0, ((hauteur-10)//10))*10, randint(0, ((largeur-10)//10))*10)
-            list_position_plante.append(actor_position)
-            self.__actors_sprites.add(plante)
-            self.__plantes_sprites.add(plante)
 
 
 
