@@ -34,8 +34,8 @@ class App:
         self.__lapins_sprites = pygame.sprite.Group()
         self.__plantes_sprites = pygame.sprite.Group()
            
-        Etres_vivants.creer(self, Renard, self.__renards_sprites, self.__actors_sprites, self.__screen, nbre_initial_renards, 25)
-        Etres_vivants.creer(self, Lapin, self.__lapins_sprites, self.__actors_sprites, self.__screen, nbre_initial_lapins, 10)
+        Animaux.creer(self, Renard, self.__renards_sprites, self.__actors_sprites, self.__screen, nbre_initial_renards, 25)
+        Animaux.creer(self, Lapin, self.__lapins_sprites, self.__actors_sprites, self.__screen, nbre_initial_lapins, 10)
         Etres_vivants.creer(self, Plante, self.__plantes_sprites, self.__actors_sprites, self.__screen, nbre_initial_plantes)
 
 

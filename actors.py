@@ -1,22 +1,24 @@
 from pygame_1 import *
+from random import randint
 
 class Etres_vivants(ActorSpriteDrivenBySpeed):
 
     def __init__(self, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color = "red") -> None:
         super().__init__(surface, position, speed, color)
 
-    def creer(self, classe, individus_sprites, actors_sprites, surface, nbre_initial_lapins: int , energie_initiale: int = None):
-        
-        for _ in range(nbre_initial_lapins) :
+    def creer(self, classe, individus_sprites, actors_sprites, surface, nbre_initial: int , energie_initiale: int = None):
+        for _ in range(nbre_initial) :
             actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
             actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            liste_position_individus = []
-            while actor_position in liste_position_individus :    
+
+            liste_position_individus = []   
+            while actor_position in liste_position_individus :    # Vérifie que les individus ne spown pas les uns sur les autres (surtout pour les plantes)
                     actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
             liste_position_individus.append(actor_position)
-            if energie_initiale == None :
+
+            if energie_initiale == None :       # S'il n'y a pas d'argument energie, c'est une plante
                 individu = classe(surface, actor_position, (0,0))
-            else :
+            else :                              # Sinon, c'est un lapin ou un renard
                 individu = classe(energie_initiale, surface, actor_position, actor_speed)
 
             actors_sprites.add(individu)
@@ -25,7 +27,7 @@ class Etres_vivants(ActorSpriteDrivenBySpeed):
 
 
 
-class Animaux(ActorSpriteDrivenBySpeed):
+class Animaux(Etres_vivants):
     _energie : int
 
     def __init__(self, energie: int, surface: pygame.Surface, position: pygame.Vector2, speed: pygame.Vector2, color) -> None:
@@ -43,7 +45,6 @@ class Animaux(ActorSpriteDrivenBySpeed):
                     for proie in proies :
                         predateur._energie += 0.75 * proie._energie
                 
-
 
     def reproduction(individus_sprites, energie_perdue: int, taille_portee_max: int):
         collision = pygame.sprite.groupcollide(individus_sprites, individus_sprites, False, False)
