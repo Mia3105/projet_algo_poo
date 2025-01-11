@@ -27,50 +27,26 @@ class App:
             pygame.quit()
             exit()
 
+
     def __init_actors(self) -> None:
         self.__actors_sprites = pygame.sprite.Group()
         self.__renards_sprites = pygame.sprite.Group()
         self.__lapins_sprites = pygame.sprite.Group()
         self.__plantes_sprites = pygame.sprite.Group()
-        
-       
-        for _ in range(nbre_initial_renards) :
-            actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
-            actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            renard = Renard(25, self.__screen, actor_position, actor_speed)
-            self.__actors_sprites.add(renard)
-            self.__renards_sprites.add(renard)
            
-
-        for _ in range(nbre_initial_lapins) :
-            actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
-            actor_speed = pygame.Vector2(randint(-1, 1), randint(-1, 1))
-            lapin = Lapin(10, self.__screen, actor_position, actor_speed)
-            self.__actors_sprites.add(lapin)
-            self.__lapins_sprites.add(lapin)
- 
-
-        list_position_plante = []
-        for _ in range(nbre_initial_plantes) :
-            actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
-            actor_speed = (0,0)
-            plante = Plante(self.__screen, actor_position, actor_speed)            
-            while actor_position in list_position_plante :    # vérifier que les plantes ne spown pas les unes sur les autres
-                    actor_position = pygame.Vector2(randint(1, ((largeur-10)//10))*10, randint(1, ((hauteur-10)//10))*10)
-            list_position_plante.append(actor_position)
-            self.__actors_sprites.add(plante)
-            self.__plantes_sprites.add(plante)
-
+        Etres_vivants.creer(self, Renard, self.__renards_sprites, self.__actors_sprites, self.__screen, nbre_initial_renards, 25)
+        Etres_vivants.creer(self, Lapin, self.__lapins_sprites, self.__actors_sprites, self.__screen, nbre_initial_lapins, 10)
+        Etres_vivants.creer(self, Plante, self.__plantes_sprites, self.__actors_sprites, self.__screen, nbre_initial_plantes)
 
 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
 
-
-
         Animaux.predateur_mange_proie(self.__lapins_sprites, self.__plantes_sprites, 20)
         Animaux.predateur_mange_proie(self.__renards_sprites, self.__lapins_sprites, 50) 
-        
+
+
+
 
     def __draw_screen(self) -> None:
         self.__screen.fill(pygame.color.THECOLORS["black"])

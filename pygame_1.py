@@ -50,7 +50,6 @@ while nbre_initial_plantes < 0 or nbre_initial_plantes > max_plantes:
 
 
 
-
 colors: Dict = {
     "black": (0, 0, 0),
     "white": (255, 255, 255),
