@@ -13,36 +13,36 @@ borne_max_ecran = 700
 hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
 while hauteur < borne_min_ecran or hauteur > borne_max_ecran:
     print("La hauteur n'est pas dans l'intervalle")
-    hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))
+    hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
 
 largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
 while largeur < borne_min_ecran or largeur > borne_max_ecran:
     print("La largeur n'est pas dans l'intervalle")
-    largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))
+    largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
 
 WINDOW_SIZE: Tuple[int, int] = (largeur, hauteur)
 WINDOW_TITLE: str = "Predateurs et Proies"
-FPS = 8
+FPS = 10
 
 
 
-max_renards = int(0.055 * sqrt(hauteur*largeur) * 2) 
+max_renards = int(0.3 * sqrt(hauteur*largeur)) 
 nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : ") or 0.055 * sqrt(hauteur*largeur))
 while nbre_initial_renards < 1 or nbre_initial_renards > max_renards:
     print("Le nombre n'est pas dans l'intervalle")
-    nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : "))
+    nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : ") or 0.055 * sqrt(hauteur*largeur))
 
-max_lapins = int(1.3 * sqrt(hauteur*largeur) * 2)
+max_lapins = int(2.6 * sqrt(hauteur*largeur))
 nbre_initial_lapins = int(input(f" - Entrez un nombre initial de lapins (inférieur à {max_lapins}) : ") or 1.3 * sqrt(hauteur*largeur))
 while nbre_initial_lapins < 1 or nbre_initial_lapins > max_lapins:
     print("Le nombre n'est pas dans l'intervalle")
-    nbre_initial_lapins = int(input(f" - Entrez un nombre initial de lapins (inférieur à {max_lapins}) : "))
+    nbre_initial_lapins = int(input(f" - Entrez un nombre initial de lapins (inférieur à {max_lapins}) : ") or 1.3 * sqrt(hauteur*largeur))
 
-max_plantes = int((hauteur*largeur) / 150)
+max_plantes = int(3.5 * sqrt(hauteur*largeur))
 nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : ") or 1.75 * sqrt(hauteur*largeur))
 while nbre_initial_plantes < 1 or nbre_initial_plantes > max_plantes:
     print("Le nombre n'est pas dans l'intervalle")
-    nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : "))
+    nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : ") or 1.75 * sqrt(hauteur*largeur))
 
 
 print("")

@@ -68,10 +68,10 @@ class App:
 
         if self.__compteur_actions >= self.__longueur_cycle:
             if self.__cycle == 1 :
-                print(f"Fin du {self.__cycle}er cycle.")
+                print(f"Fin du {self.__cycle}er cycle")
             else :
-                print(f"Fin du {self.__cycle}ème cycle.")
-            print(f"Il y a {len(self._renards_sprites)} renards et {len(self._lapins_sprites)} lapins")
+                print(f"Fin du {self.__cycle}ème cycle")
+            print(f"Il y a {len(self._renards_sprites)} renards et {len(self._lapins_sprites)} lapins.")
             print("----------")
 
             self.__cycle += 1
