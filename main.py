@@ -8,6 +8,9 @@ class App:
     __running: bool = False
     __clock: pygame.time.Clock = pygame.time.Clock()
     __FPS: int = FPS
+    __compteur_actions: int = 0
+    __longueur_cycle: int = 50
+    __cycle: int = 1
 
     __actors_sprites: pygame.sprite.Group
 
@@ -30,22 +33,38 @@ class App:
 
     def __init_actors(self) -> None:
         self.__actors_sprites = pygame.sprite.Group()
-        self.__renards_sprites = pygame.sprite.Group()
-        self.__lapins_sprites = pygame.sprite.Group()
-        self.__plantes_sprites = pygame.sprite.Group()
+        self._renards_sprites = pygame.sprite.Group()
+        self._lapins_sprites = pygame.sprite.Group()
+        self._plantes_sprites = pygame.sprite.Group()
            
-        Animaux.creer(self, Renard, self.__renards_sprites, self.__actors_sprites, self.__screen, nbre_initial_renards, 25)
-        Animaux.creer(self, Lapin, self.__lapins_sprites, self.__actors_sprites, self.__screen, nbre_initial_lapins, 10)
-        Etres_vivants.creer(self, Plante, self.__plantes_sprites, self.__actors_sprites, self.__screen, nbre_initial_plantes)
+   
+       
+        Animaux.creer(self, Renard, self._renards_sprites, self.__actors_sprites, self.__screen, nbre_initial_renards)
+        Animaux.creer(self, Lapin, self._lapins_sprites, self.__actors_sprites, self.__screen, nbre_initial_lapins)
+        Etres_vivants.creer(self, Plante, self._plantes_sprites, self.__actors_sprites, self.__screen, nbre_initial_plantes)
 
 
     def __update_actors(self) -> None:
         self.__actors_sprites.update()
 
-        Animaux.predateur_mange_proie(self.__lapins_sprites, self.__plantes_sprites, 20)
-        Animaux.predateur_mange_proie(self.__renards_sprites, self.__lapins_sprites, 50) 
+        self.__compteur_actions += 1
 
+        Animaux.predateur_mange_proie(self._lapins_sprites, self._plantes_sprites, 20)
+        Animaux.predateur_mange_proie(self._renards_sprites, self._lapins_sprites, 50) 
 
+        Animaux.reproduction(self, Lapin, self._lapins_sprites, self.__actors_sprites, self.__screen)
+        Animaux.reproduction(self, Renard, self._renards_sprites, self.__actors_sprites, self.__screen)
+
+        if self.__compteur_actions >= self.__longueur_cycle:
+            if self.__cycle == 1 :
+                print(f"C'est la fin du {self.__cycle}er cycle.")
+            else :
+                print(f"C'est la fin du {self.__cycle}ème cycle.")
+            print(f"- Il y a {len(self._renards_sprites)} renards et {len(self._lapins_sprites)} lapins")
+
+            self.__cycle += 1
+            Plante.reset_plantes(self, self.__screen, self._plantes_sprites, self.__actors_sprites, nbre_initial_plantes)
+            self.__compteur_actions = 0
 
 
     def __draw_screen(self) -> None:
@@ -64,11 +83,6 @@ class App:
             self.__draw_actors()
             pygame.display.flip()
 
-
-
-    
-
-    
 
 if __name__ == "__main__":
     app = App()

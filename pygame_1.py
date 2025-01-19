@@ -7,7 +7,7 @@ from math import sqrt
 print("")
 print("Bienvenu dans ma simulation de Prédateurs et Proies")
 
-borne_min_ecran = 300
+"""borne_min_ecran = 300
 borne_max_ecran = 700
 
 hauteur = int(input(f" - Entrez une hauteur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
@@ -18,7 +18,9 @@ while hauteur < borne_min_ecran or hauteur > borne_max_ecran:
 largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : ") or 400)
 while largeur < borne_min_ecran or largeur > borne_max_ecran:
     print("La largeur n'est pas dans l'intervalle")
-    largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))
+    largeur = int(input(f" - Entrez une largeur pour l'ecran (entre {borne_min_ecran} et {borne_max_ecran}) : "))"""
+largeur = 400
+hauteur = 400
 
 WINDOW_SIZE: Tuple[int, int] = (largeur, hauteur)
 WINDOW_TITLE: str = "Predateurs et Proies"
@@ -26,7 +28,7 @@ FPS = 12
 
 
 
-max_renards = int(0.055 * sqrt(hauteur*largeur) * 2) 
+"""max_renards = int(0.055 * sqrt(hauteur*largeur) * 2) 
 nbre_initial_renards = int(input(f" - Entrez un nombre initial de renards (inférieur à {max_renards}) : ") or 22)
 while nbre_initial_renards < 0 or nbre_initial_renards > max_renards:
     print("Le nombre n'est pas dans l'intervalle")
@@ -42,9 +44,11 @@ max_plantes = int(1.75 * sqrt(hauteur*largeur) * 2)
 nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : ") or 700)
 while nbre_initial_plantes < 0 or nbre_initial_plantes > max_plantes:
     print("Le nombre n'est pas dans l'intervalle")
-    nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : "))
+    nbre_initial_plantes = int(input(f" - Entrez un nombre initial de plantes (inférieur à {max_plantes}) : "))"""
 
-
+nbre_initial_lapins = 520
+nbre_initial_renards = 22
+nbre_initial_plantes = 700
 
 
 
